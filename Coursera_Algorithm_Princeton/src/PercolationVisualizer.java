@@ -48,6 +48,7 @@ public class PercolationVisualizer {
                 }
                 else
                     StdDraw.setPenColor(StdDraw.BLACK);
+                
                 StdDraw.filledSquare(col - 0.5, n - row + 0.5, 0.45);
             }
         }
@@ -70,7 +71,9 @@ public class PercolationVisualizer {
 
         // repeatedly read in sites to open and draw resulting system
         Percolation perc = new Percolation(n);
+        
         draw(perc, n);
+        
         StdDraw.show();
         StdDraw.pause(DELAY);
         while (!in.isEmpty()) {
