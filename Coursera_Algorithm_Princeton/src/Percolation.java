@@ -11,10 +11,10 @@ import java.util.*;
 
 public class Percolation {
 	
-	int[][] mySys;
+	int[][] mySys; // tells that sites are open, blocked
 	private int N;
-	private int[] id;
-	private int[] sz; // count number of objects in the tree rooted at vertex i_th
+	private int[] id; // for union–find data structure, tells that which sites are connected to which other sites
+	private int[] sz; // for union–find data structure, count number of objects in the tree rooted at vertex i_th
 	
 	// creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -50,19 +50,33 @@ public class Percolation {
     	return (row - 1) * N + col;
     	
     }
+    
+    //the row and column indices must be between 1 and N
+    private boolean isInvalidIndex(int index) {
+    	return (index <= 0 || index > N);
+    	
+    }
 
     // opens the site (row, col) if it is not open already
+    // WeightedQuickUnionUF - Union method
+    // 1 means open
     public void open(int row, int col) {
-    	
+    	if(isInvalidIndex(row) || isInvalidIndex(col))
+    		throw new IllegalArgumentException("row/column index i out of bounds");
+    	 //mySys[row, col] == 1;
     }
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-    	return false;
+    	if(isInvalidIndex(row) || isInvalidIndex(col))
+    		throw new IllegalArgumentException("row/column index i out of bounds");
+    	return mySys[row][col] == 1;
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
+    	if(isInvalidIndex(row) || isInvalidIndex(col))
+    		throw new IllegalArgumentException("row/column index i out of bounds");
     	return false;
     }
 
@@ -72,6 +86,7 @@ public class Percolation {
     }
 
     // does the system percolate?
+    // WeightedQuickUnionUF - Connected method
     public boolean percolates() {
     	return false;
     }
@@ -97,6 +112,9 @@ public class Percolation {
     		}
     		System.out.println();
     	}
+    	
+    	System.out.println(p1.isInvalidIndex(-1));
+    	System.out.println(p1.isInvalidIndex(5));
     		
     }
 
