@@ -9,6 +9,8 @@
 
 import java.util.*;
 
+import couse1.week4.GraphVertex;
+
 public class Percolation {
 	
 	int[][] mySys; // tells that sites are open, blocked
@@ -45,6 +47,46 @@ public class Percolation {
     	
     }
     
+    private boolean connected(int p, int q) {
+		int i = id[p];
+		int j = id[q];
+		return i == j;
+	}
+    
+    private int twoPassRoot(int node_i_index) {
+		ArrayList<Integer> visited = new ArrayList<Integer>();
+		while(node_i_index != this.id[node_i_index]) // when the given node is not the root node 
+		{	
+			visited.add(node_i_index);
+			node_i_index = id[node_i_index]; //chase parent pointers until reach root
+			//visited.add(node_i_index);
+		}
+		// for all visited node, set its id to point to the root node
+		for(Integer v: visited) {
+			//if(id[v] != node_i_index)
+				id[v] = node_i_index;
+				
+		}
+		return node_i_index;
+	}
+    
+    private void union(int p, int q)
+	{
+		int p_root_id = twoPassRoot(p); // takes at most logV
+		int q_root_id = twoPassRoot(q);
+		
+		if(p_root_id == q_root_id) return;
+		
+		if(this.sz[p_root_id] < this.sz[q_root_id]) {
+			id[p_root_id] = q_root_id;
+			sz[q_root_id] += sz[p_root_id];
+		}
+		else {
+			id[q_root_id] = p_root_id;
+			sz[p_root_id] += sz[q_root_id];
+		}
+	}
+    
     private int xyTo1D(int row, int col) {
     	
     	return (row - 1) * N + col;
@@ -61,9 +103,17 @@ public class Percolation {
     // WeightedQuickUnionUF - Union method
     // 1 means open
     public void open(int row, int col) {
+    	//validate the indices of the site that it receives
     	if(isInvalidIndex(row) || isInvalidIndex(col))
     		throw new IllegalArgumentException("row/column index i out of bounds");
-    	 //mySys[row, col] == 1;
+    	
+    	//mark the site as open
+    	 this.mySys[row][col] = 1;
+    	 
+    	//perform some sequence of WeightedQuickUnionUF operations 
+    	//that links the site [row, col] to its open neighbors [left, right, up, down] open sites.
+    	 
+    	 
     }
 
     // is the site (row, col) open?
