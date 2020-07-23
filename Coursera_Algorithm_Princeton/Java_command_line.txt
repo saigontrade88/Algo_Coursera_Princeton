@@ -1,0 +1,2 @@
+cd C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton
+java -cp  "C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\bin;C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\algs4.jar" PercolationVisualizer  Input/input20.txt
