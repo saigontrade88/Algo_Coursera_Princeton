@@ -8,7 +8,7 @@
  */
 
 import java.util.*;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF; // https://algs4.cs.princeton.edu/15uf/WeightedQuickUnionUF.java.html
 
 
 public class Percolation {
@@ -38,7 +38,7 @@ public class Percolation {
     	//id = new int[(N + 1)*(N + 1)];
 		//sz = new int[(N + 1)*(N + 1)];
     	
-    	mySetArray = new WeightedQuickUnionUF((N + 1)*(N + 1));
+    	mySetArray = new WeightedQuickUnionUF((N)*(N) + 2);
 		
 		
 		
@@ -94,6 +94,17 @@ public class Percolation {
 //		}
 //	}
     
+ // returns the number of open sites
+//    private int numberOfAdjacenctSites(int row, int col) {
+//    	if((row == 1 && col == 1) ||
+//    	   (row == N && col == 1) ||
+//    	   (row == 1 && col == N) ||
+//    	   (row == N && col == N)) {
+//    		return 3;
+//    	}
+//    	return 4;
+//    }
+    
     private int xyTo1D(int row, int col) {
     	
     	return (row - 1) * N + col;
@@ -111,7 +122,57 @@ public class Percolation {
 //    	return (index <= 0 || index > N);
 //    	
 //    }
-
+    private void unionSites(int row, int col, int nrow, int ncol) {
+    	// already open and not connected, then union
+    	if(isOpen(nrow, ncol) && !connected(xyTo1D(row, col), xyTo1D(nrow, ncol)))
+			mySetArray.union(xyTo1D(row, col), xyTo1D(nrow, ncol));
+    }
+   
+    //Precondition: coordination is already valid
+    private void openSurroundingNeigbors(int row, int col) {
+    	openLeftNeighbors(row, col, row, col - 1);
+    	openAboveNeighbors(row, col, row - 1, col);
+    	openRightNeighbors(row, col, row, col + 1);
+    	openBelowNeighbors(row, col, row + 1, col);
+    	
+    }
+    
+    private void openLeftNeighbors(int row, int col, int nrow, int ncol) {
+    	if(col != 1)//not left most col
+    	{
+    		unionSites(row, col, nrow, ncol);
+    	}
+    	//left most col, ignore it
+    }
+    private void openAboveNeighbors(int row, int col, int nrow, int ncol) {
+    	if(row == 1) //top row 
+    	{
+    		mySetArray.union(xyTo1D(row, col), mySetArray.find(0)); // union with top virtual site
+    	}
+    	else {
+    		unionSites(row, col, nrow, ncol);
+    	}
+    	
+    }
+    
+    private void openRightNeighbors(int row, int col, int nrow, int ncol) {
+    	if(col != N)//not left most col
+    	{
+    		unionSites(row, col, nrow, ncol);
+    	}
+    	//right most col, ignore it
+    }
+    
+    private void openBelowNeighbors(int row, int col, int nrow, int ncol) {
+    	if(row == N) //bottom row 
+    	{
+    		mySetArray.union(xyTo1D(row, col), mySetArray.find(N*N + 1)); // union with bottom virtual site
+    	}
+    	else {
+    		unionSites(row, col, nrow, ncol);
+    	}
+    }
+    
     // opens the site (row, col) if it is not open already
     // WeightedQuickUnionUF - Union method
     // 1 means open
@@ -124,24 +185,11 @@ public class Percolation {
     		//mark the site as open
     		this.mySys[row][col] = 1;
     		opened++;
-
-    		//perform some sequence of WeightedQuickUnionUF operations 
-    		//that links the site [row, col] to its open neighbors [left, right, up, down] open sites.
-    		//left neighbor
-    		if(isOpen(row, col - 1) && !connected(xyTo1D(row, col), xyTo1D(row, col - 1))) {
-    			mySetArray.union(xyTo1D(row, col), xyTo1D(row, col - 1));
-    		}
-    		//right neighbor
-    		if(isOpen(row, col + 1) && !connected(xyTo1D(row, col), xyTo1D(row, col + 1)))
-    			mySetArray.union(xyTo1D(row, col), xyTo1D(row, col + 1));
-
-    		//up neighbor
-    		if(isOpen(row - 1, col) && !connected(xyTo1D(row, col), xyTo1D(row - 1, col)))
-    			mySetArray.union(xyTo1D(row, col), xyTo1D(row - 1, col));
-
-    		//down neighbor
-    		if(isOpen(row + 1, col) && !connected(xyTo1D(row, col), xyTo1D(row + 1, col)))
-    			mySetArray.union(xyTo1D(row, col), xyTo1D(row + 1, col));
+    		//links the site to its open neighbors
+    		// site (1,1) and site (1, N)
+    		
+    		openSurroundingNeigbors(row, col);
+    		
     		
     	}
     	
@@ -214,7 +262,7 @@ public class Percolation {
     		System.out.println();
     		
     	}
-    	
+    	//left of (2, 4)
     	p1.open(2, 3);
     	
     	System.out.println("open (2, 3) ");
@@ -227,7 +275,7 @@ public class Percolation {
     	}
     	
     	System.out.println(p1.connected(p1.xyTo1D(2, 3), p1.xyTo1D(2, 4)));
-    	
+    	//below of (2 ,4)
     	p1.open(3, 4);
     	System.out.println(p1.connected(p1.xyTo1D(3, 4), p1.xyTo1D(2, 4)));
     	
@@ -245,6 +293,44 @@ public class Percolation {
     		
     	}
     	System.out.println("number of open sites = " + p1.opened);
+    	//******************************************************************//
+    	//test open based on the lecture's slides
+    	//test the Percolation() constructor
+    	
+    	System.out.println("test open() method");
+    	p1 = new Percolation(5);
+    	p1.open(1, 1);
+    	System.out.println("open (1, 1) "); 	
+    	p1.open(1, 2);
+    	System.out.println("open (1, 2) "); 	
+    	p1.open(1, 4);
+    	System.out.println("open (4, 1) ");
+    	p1.open(2, 4);
+    	System.out.println("open (2, 4) ");
+    	p1.open(3, 4);
+    	System.out.println("open (3, 4) ");
+    	p1.open(3, 5);
+    	System.out.println("open (3, 5) ");
+    	p1.open(4, 1);
+    	System.out.println("open (4, 1) ");
+    	p1.open(5, 1);
+    	System.out.println("open (5, 1) ");
+    	p1.open(5, 2);
+    	System.out.println("open (5, 2) ");
+    	p1.open(5, 4);
+    	System.out.println("open (5, 4) ");
+    	p1.open(5, 5);
+    	System.out.println("open (5, 4) ");
+    	
+    	for(int i = 1; i <= p1.N; i++) {
+    		for(int j = 1; j <= p1.N; j++) {
+    			System.out.print(p1.mySetArray.find(p1.xyTo1D(i, j)) + " ");
+    		}
+    		System.out.println();
+    		
+    	}
+    	System.out.println("number of open sites = " + p1.opened);
+    	System.out.println("number of sets  = " + p1.mySetArray.count());
     }
 
 }
