@@ -209,7 +209,11 @@ public class Percolation {
     public boolean isFull(int row, int col) {
     	if(isInvalidIndex(row) || isInvalidIndex(col))
     		throw new IllegalArgumentException("row/column index i out of bounds");
-    	return false;
+    	
+    	int i = mySetArray.find(xyTo1D(row, col));
+		int j = mySetArray.find(0); // top virtual site
+		return i == j;
+    	
     }
 
     // returns the number of open sites
@@ -220,7 +224,11 @@ public class Percolation {
     // does the system percolate?
     // WeightedQuickUnionUF - Connected method
     public boolean percolates() {
-    	return false;
+    	
+    	int i = mySetArray.find(N*N + 1); // bottom virtual site
+		int j = mySetArray.find(0); // top virtual site
+		
+		return i == j;
     }
 
     // test client (optional)
