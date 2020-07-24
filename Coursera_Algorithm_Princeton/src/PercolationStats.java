@@ -1,9 +1,11 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 //import edu.princeton.cs.algs4.StdIn;
-//import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Stopwatch;
 
-import java.lang.*;
+
+import java.lang.Math;
 
 public class PercolationStats {
 	
@@ -77,6 +79,8 @@ public class PercolationStats {
 		int n = Integer.parseInt(args[0]);
 		int T = Integer.parseInt(args[1]);
 		
+		Stopwatch timer1 = new Stopwatch();
+		
 		PercolationStats mySimulation = new PercolationStats(n, T);
 		
 		System.out.println("mean = "   + mySimulation.mean());
@@ -84,6 +88,10 @@ public class PercolationStats {
 		System.out.println("95% confidencene interval = [" + mySimulation.confidenceLo()
 		                   + ", " + mySimulation.confidenceHi() + "]");
 		
+		double time1 = timer1.elapsedTime();
+		
+		StdOut.printf("time = " + "(%.2f seconds)\n", time1);
+
 		
 		
 	}

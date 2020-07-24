@@ -13,7 +13,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF; // https://algs4.cs.princeto
 
 public class Percolation {
 	
-	private int[][] mySys; // tells that sites are open, blocked
+	private boolean[][] mySys; // tells that sites are open, blocked
 	private int N;
 	private WeightedQuickUnionUF mySetArray;
 	private int opened;
@@ -31,7 +31,7 @@ public class Percolation {
     	
     	//By convention, the row and column indices are integers between 1 and n, 
     	//where (1, 1) is the upper-left site:
-    	mySys = new int[N + 1][N + 1];
+    	mySys = new boolean[N + 1][N + 1];
     	
     	//id = new int[(N + 1)*(N + 1)];
 		//sz = new int[(N + 1)*(N + 1)];
@@ -42,7 +42,7 @@ public class Percolation {
 		
     	for(int i = 1; i <= N; i++) {
     		for(int j = 1; j <= N; j++) {
-    			mySys[i][j] = -1; // all sites are blocked
+    			mySys[i][j] = false; // all sites are blocked
     			//id[xyTo1D(i, j)] = xyTo1D(i, j);
     			//sz[xyTo1D(i, j)] = 1;
     		}
@@ -181,7 +181,7 @@ public class Percolation {
     	
     	if(!isOpen(row, col)) {
     		//mark the site as open
-    		this.mySys[row][col] = 1;
+    		this.mySys[row][col] = true;
     		opened++;
     		//links the site to its open neighbors
     		// site (1,1) and site (1, N)
@@ -200,7 +200,7 @@ public class Percolation {
     public boolean isOpen(int row, int col) {
     	if(isInvalidIndex(row) || isInvalidIndex(col))
     		throw new IllegalArgumentException("row/column index i out of bounds");
-    	return mySys[row][col] == 1;
+    	return mySys[row][col] == true;
     }
 
     // is the site (row, col) full?
@@ -336,7 +336,7 @@ public class Percolation {
     		
     	}
     	System.out.println("number of open sites = " + p1.opened);
-    	System.out.println("number of sets  = " + p1.mySetArray.count());
+    	//System.out.println("number of sets  = " + p1.mySetArray.count());
     }
 
 }
