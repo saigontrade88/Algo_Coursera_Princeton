@@ -13,10 +13,8 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF; // https://algs4.cs.princeto
 
 public class Percolation {
 	
-	int[][] mySys; // tells that sites are open, blocked
+	private int[][] mySys; // tells that sites are open, blocked
 	private int N;
-	//private int[] id; // for union–find data structure, tells that which sites are connected to which other sites
-	//private int[] sz; // for union–find data structure, count number of objects in the tree rooted at vertex i_th
 	private WeightedQuickUnionUF mySetArray;
 	private int opened;
 	

@@ -10,7 +10,7 @@ public class PercolationStats {
 	//int n;
 	//int trials;
 	
-	double[] results;
+	private double[] results;
 	
 	// perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -32,17 +32,15 @@ public class PercolationStats {
         		int col = StdRandom.uniform(1, n + 1);
         		
         		//Open the site if it is blocked.
-        		if(p1.mySys[row][col] == -1)
+        		if(!p1.isOpen(row, col))
         			p1.open(row, col);
         		
         	}
     		
-    		if(p1.percolates())
-    			results[t] = (double) p1.numberOfOpenSites()/(n*n);
-    		else
-    			results[t] = 0;
+    		results[t] = (double) p1.numberOfOpenSites()/(n*n);
     		
-    		System.out.println("n= " + n + " trial = " + t + " percolation threshold = " + results[t]);
+    		
+    		//System.out.println("n= " + n + " trial = " + t + " percolation threshold = " + results[t]);
     				
     		t++;
     		
