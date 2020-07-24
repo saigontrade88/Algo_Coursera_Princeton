@@ -1,2 +1,10 @@
 cd C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton
 java -cp  "C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\bin;C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\algs4.jar" PercolationVisualizer  Input/input20.txt
+javac -cp algs4.jar src/Percolation.java
+
+javac -cp src/;algs4.jar src/PercolationStats.java
+
+
+java -cp  "C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\src;C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\algs4.jar" Percolation
+
+java -cp  "C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\src;C:\Users\Long Dang\git\Algo_Coursera_Princton\Coursera_Algorithm_Princeton\algs4.jar" PercolationStats 200 100
