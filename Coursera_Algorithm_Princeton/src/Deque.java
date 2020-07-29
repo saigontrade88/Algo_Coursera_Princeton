@@ -64,10 +64,13 @@ public class Deque<Item> implements Iterable<Item> {
     // add the item to the back
     public void addLast(Item item) {
     	//save a link to the last node
+    	Node oldLast = last;
     	
     	// create a new node for the end
+    	last = new Node(item);
     	
     	//link the new node to the end of the list
+    	oldLast.next = last;
     	
     }
 
@@ -142,6 +145,17 @@ public class Deque<Item> implements Iterable<Item> {
    		}
    		return true;
    	}
+   	
+   	private  void printDequeue() {
+   		//StringBuilder s = new StringBuilder();
+   		Node temp = first;
+   		String result = " ";
+   		while(!(temp == null)) {
+   			result += temp.item + " ";
+   			temp = temp.next;
+   		}
+   		StdOut.println(result);
+   	}
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -155,11 +169,14 @@ public class Deque<Item> implements Iterable<Item> {
 		
 		linkedDeque.addFirst("to");
 		
-		linkedDeque.addFirst(" ");
+		linkedDeque.addFirst("me");
 		
 		linkedDeque.addFirst("be");
 		
 		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+		
+		linkedDeque.printDequeue();
+		
 
 	}
 
