@@ -1,4 +1,6 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
@@ -77,12 +79,20 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the front
     public Item removeFirst() {
     	
+    	if(isEmpty()) {
+    		throw new NoSuchElementException("Stack underflow");
+    	}
     	//save item to return
+    	Item oldFirst = first.item;
     	
     	//delete the first node -- -- link the second first node to the front of the list
+    	first = first.next;
+    	n--;
+    	
+    	assert check();
     	
     	//return saved item
-    	return null;
+    	return oldFirst;
     }
 
     // remove and return the item from the back
@@ -167,15 +177,35 @@ public class Deque<Item> implements Iterable<Item> {
 //			
 //		}
 		
-		linkedDeque.addFirst("to");
+		StdOut.println("Call add first 1 2 3");
 		
-		linkedDeque.addFirst("me");
+		linkedDeque.addFirst("1");
 		
-		linkedDeque.addFirst("be");
+		linkedDeque.addFirst("2");
+		
+		linkedDeque.addFirst("3");
 		
 		StdOut.println("(" + linkedDeque.size() + " left on deque)");
 		
 		linkedDeque.printDequeue();
+		
+		String result = " ";
+		
+		int origSize = linkedDeque.size();
+		
+		StdOut.println("Call removeFirst " + origSize + " consecutive times: " + result);
+		
+			
+		for(int i = 0; i < origSize; i++) {
+			
+			result += linkedDeque.removeFirst() + " ";
+			
+		}
+		
+		StdOut.println("Remove items in this order: " + result);
+		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+		
+		
 		
 
 	}
