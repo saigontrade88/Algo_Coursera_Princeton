@@ -170,40 +170,48 @@ public class Deque<Item> implements Iterable<Item> {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Deque<String> linkedDeque = new Deque<String>();
-//		while(!StdIn.isEmpty()) {
-//			String item = StdIn.readString();
-//			if(!item.equals("-"))
-//				linkedDeque.addFirst(item);
-//			
-//		}
-		
-		StdOut.println("Call add first 1 2 3");
-		
-		linkedDeque.addFirst("1");
-		
-		linkedDeque.addFirst("2");
-		
-		linkedDeque.addFirst("3");
-		
-		StdOut.println("(" + linkedDeque.size() + " left on deque)");
-		
-		linkedDeque.printDequeue();
-		
-		String result = " ";
-		
-		int origSize = linkedDeque.size();
-		
-		StdOut.println("Call removeFirst " + origSize + " consecutive times: " + result);
-		
-			
-		for(int i = 0; i < origSize; i++) {
-			
-			result += linkedDeque.removeFirst() + " ";
+		while(!StdIn.isEmpty()) {
+			String item = StdIn.readString();
+			if(!item.equals("-"))
+				linkedDeque.addFirst(item);
+			else
+				linkedDeque.removeFirst();
 			
 		}
 		
-		StdOut.println("Remove items in this order: " + result);
-		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+		StdOut.println("(" + linkedDeque.size() + " left on stack)");
+		
+		linkedDeque.printDequeue();
+		
+		
+		
+//		StdOut.println("Call add first 1 2 3");
+//		
+//		linkedDeque.addFirst("1");
+//		
+//		linkedDeque.addFirst("2");
+//		
+//		linkedDeque.addFirst("3");
+//		
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+//		
+//		linkedDeque.printDequeue();
+//		
+//		String result = " ";
+//		
+//		int origSize = linkedDeque.size();
+//		
+//		StdOut.println("Call removeFirst " + origSize + " consecutive times: " + result);
+//		
+//			
+//		for(int i = 0; i < origSize; i++) {
+//			
+//			result += linkedDeque.removeFirst() + " ";
+//			
+//		}
+//		
+//		StdOut.println("Remove items in this order: " + result);
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
 		
 		
 		
