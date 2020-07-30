@@ -52,15 +52,17 @@ public class Deque<Item> implements Iterable<Item> {
     // edge case: the list is empty
     public void addFirst(Item item) {
     	//save a link to the front list
-    	Node oldFirst = first;
+    	Node newNode = new Node(item);
     	
     	//create a new node for the beginning, make the new node as first
-    	first = new Node(item);
+    	newNode.next = first;
+    	newNode.prev = null;
     	    	
     	//make next of the new node as the old first
-    	first.next = oldFirst;
-    	oldFirst.prev = first;
+    	if(!isEmpty())
+    		first.prev = newNode;
     	
+    	first = newNode;
     	//increase the number of nodes
     	n++;
     	
@@ -172,13 +174,13 @@ public class Deque<Item> implements Iterable<Item> {
    			if(first != null) return false;
    		}
    		else if(n == 1) {
-   			if(first == null) return false;
-   			if(first.next != null) return false;
+   			if(first == null || last == null) return false;
+   			if(first.next != null || last.prev != null) return false;
    			//How about the tail check the Queue sample program
    		}
    		else {
    			if (first == null) return false;
-   			if(first.next == null) return false;
+   			if(first.next == null || last.prev == null) return false;
    		}
    		return true;
    	}
