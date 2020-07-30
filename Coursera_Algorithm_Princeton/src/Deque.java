@@ -20,8 +20,10 @@ public class Deque<Item> implements Iterable<Item> {
 	private class Node{
 		private Item item;
 		private Node next;
+		private Node prev;
 		public Node(Item item) {
 			this.item = item;
+			next = prev = null;
 		}
 		
 		
@@ -47,15 +49,17 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // add the item to the front
+    // edge case: the list is empty
     public void addFirst(Item item) {
     	//save a link to the front list
     	Node oldFirst = first;
     	
-    	//create a new node for the beginning
+    	//create a new node for the beginning, make the new node as first
     	first = new Node(item);
     	    	
-    	//link the new node to the front of the list
+    	//make next of the new node as the old first
     	first.next = oldFirst;
+    	oldFirst.prev = first;
     	
     	//increase the number of nodes
     	n++;
@@ -73,6 +77,12 @@ public class Deque<Item> implements Iterable<Item> {
     	
     	//link the new node to the end of the list
     	oldLast.next = last;
+    	last.prev = oldLast;
+    	
+    	//increase the number of nodes
+    	n++;
+    	
+    	assert check();
     	
     }
 
@@ -86,7 +96,14 @@ public class Deque<Item> implements Iterable<Item> {
     	Item oldFirst = first.item;
     	
     	//delete the first node -- -- link the second first node to the front of the list
-    	first = first.next;
+    	Node firstNext = first.next;
+    	
+    	firstNext.prev = null;
+    	
+    	first.next = null;
+    	
+    	first = firstNext;
+    	
     	n--;
     	
     	assert check();
@@ -98,20 +115,30 @@ public class Deque<Item> implements Iterable<Item> {
     // remove and return the item from the back
     public Item removeLast() {
     	//save item to return
+    	Item oldLast = last.item;
+    	
     	
     	//delete the last node -- link the second last node to the end of the list
+    	Node prevLast = last.prev;
     	
+    	prevLast.next = null;
+    	
+    	last.prev = null;
+    	
+    	last = prevLast;
+    	
+    	n--;
+    	
+    	assert check();
     	//return the saved item
-    	
-
-    	return null;
+    	return oldLast;
     }
 
     // return an iterator over items in order from front to back
    	@Override
    	public Iterator<Item> iterator() {
    		// TODO Auto-generated method stub
-   		return null;
+   		return new ListIterator();
    	}
    	
    	private class ListIterator implements Iterator<Item>{
