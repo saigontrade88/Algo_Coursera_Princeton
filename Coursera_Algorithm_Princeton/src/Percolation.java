@@ -12,9 +12,9 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF; // https://algs4.cs.princeto
 
 
 /* 16 bytes (object overhead)
- * N*N bytes for the 2 dimensional boolean array
+ * ~ N*N bytes for the 2 dimensional boolean array, ignoring the overhead of the array itself
  * 4 bytes for N
- * ~8N bytes for WeightedQuickUnionUF object
+ * 8*N*N + 88 bytes for WeightedQuickUnionUF object
  * 4 bytes for opened
  * Approximate total ~N*N bytes
 */
