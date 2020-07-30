@@ -5,6 +5,13 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
 
 
+/*16 bytes (object overhead)
+ *8 bytes reference to double array
+ *8N + 24 bytes (double[] array)
+ *4 bytes padding
+ *Total 8N + 52 bytes
+*/
+
 import java.lang.Math;
 
 public class PercolationStats {
@@ -12,7 +19,7 @@ public class PercolationStats {
 	//int n;
 	//int trials;
 	
-	private double[] results;
+	private double[] results; 
 	
 	// perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {

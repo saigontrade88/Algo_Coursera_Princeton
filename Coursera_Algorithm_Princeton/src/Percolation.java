@@ -11,6 +11,14 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF; // https://algs4.cs.princeton.edu/15uf/WeightedQuickUnionUF.java.html
 
 
+/* 16 bytes (object overhead)
+ * ~ N*N bytes for the 2 dimensional boolean array, ignoring the overhead of the array itself
+ * 4 bytes for N
+ * 8*N*N + 88 bytes for WeightedQuickUnionUF object
+ * 4 bytes for opened
+ * Approximate total ~N*N bytes
+*/
+
 public class Percolation {
 	
 	private boolean[][] mySys; // tells that sites are open, blocked
