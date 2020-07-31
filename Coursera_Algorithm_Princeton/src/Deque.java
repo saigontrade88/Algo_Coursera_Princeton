@@ -243,84 +243,89 @@ public class Deque<Item> implements Iterable<Item> {
 		// TODO Auto-generated method stub
 		Deque<String> linkedDeque = new Deque<String>();
 		
-//		while(!StdIn.isEmpty()) {
-//			String item = StdIn.readString();
-//			if(!item.equals("-"))
-//				linkedDeque.addLast(item);
-//			else
-//				linkedDeque.removeFirst();
+		while(!StdIn.isEmpty()) {
+			String item = StdIn.readString();
+			if(!item.equals("-") && !item.equals("*") && !item.equals("it"))
+				linkedDeque.addLast(item);
+			else if(item.equals("*"))
+				linkedDeque.removeLast();
+			else if(item.equals("it"))
+				linkedDeque.addFirst(item);
+			else
+				linkedDeque.removeFirst();
+			
+		}
+		
+		StdOut.println("(" + linkedDeque.size() + " left on stack)");
+		
+		StdOut.println(linkedDeque.toString());
+		
+		//***********************************
+			
+//		StdOut.println("Call add  last 0 1 2 3, then removeLast repeatedly");
+//		
+//		linkedDeque.addLast("0");
+//	
+//		linkedDeque.addLast("1");
+//		
+//		linkedDeque.addLast("2");
+//		
+//		linkedDeque.addLast("3");
+//		
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+//		
+//		linkedDeque.printDequeue();
+//		
+//		String result = " ";
+//		
+//		int origSize = linkedDeque.size();
+//		
+//		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
+//		
+//			
+//		for(int i = 0; i < origSize; i++) {
+//			
+//			result += linkedDeque.removeLast() + " ";
+//			
+//			//StdOut.println("Remove items in this order: " + result);
 //			
 //		}
 //		
-//		StdOut.println("(" + linkedDeque.size() + " left on stack)");
+//		StdOut.println("Remove items in this order: " + result);
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
 //		
-//		StdOut.println(linkedDeque.toString());
-		
-		
-		StdOut.println("Call add  last 1 2 3");
-		
-		linkedDeque.addLast("0");
-	
-		linkedDeque.addLast("1");
-		
-		linkedDeque.addLast("2");
-		
-		linkedDeque.addLast("3");
-		
-		StdOut.println("(" + linkedDeque.size() + " left on deque)");
-		
-		linkedDeque.printDequeue();
-		
-		String result = " ";
-		
-		int origSize = linkedDeque.size();
-		
-		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
-		
-			
-		for(int i = 0; i < origSize; i++) {
-			
-			result += linkedDeque.removeLast() + " ";
-			
-			//StdOut.println("Remove items in this order: " + result);
-			
-		}
-		
-		StdOut.println("Remove items in this order: " + result);
-		StdOut.println("(" + linkedDeque.size() + " left on deque)");
-		
-		//***********************************
-		StdOut.println("Test case 2: Call add  first 0 1 2 3");
-		
-		result = " ";
-		
-		linkedDeque.addFirst("0");
-	
-		linkedDeque.addFirst("1");
-		
-		linkedDeque.addFirst("2");
-		
-		linkedDeque.addFirst("3");
-		
-		StdOut.println("(" + linkedDeque.size() + " left on deque)");
-		
-		linkedDeque.printDequeue();
-		
-		origSize = linkedDeque.size();
-		
-		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
-		
-			
-		for(int i = 0; i < origSize; i++) {
-			
-			result += linkedDeque.removeLast() + " ";
-			
-			//StdOut.println("Remove items in this order: " + result);
-			
-		}
-		
-		StdOut.println("Remove items in this order: " + result);
-		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+//		//***********************************
+//		StdOut.println("Test case 2: Call add  first 0 1 2 3, then removeLast repeatedly");
+//		
+//		result = " ";
+//		
+//		linkedDeque.addFirst("0");
+//	
+//		linkedDeque.addFirst("1");
+//		
+//		linkedDeque.addFirst("2");
+//		
+//		linkedDeque.addFirst("3");
+//		
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+//		
+//		linkedDeque.printDequeue();
+//		
+//		origSize = linkedDeque.size();
+//		
+//		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
+//		
+//			
+//		for(int i = 0; i < origSize; i++) {
+//			
+//			result += linkedDeque.removeLast() + " ";
+//			
+//			//StdOut.println("Remove items in this order: " + result);
+//			
+//		}
+//		
+//		StdOut.println("Remove items in this order: " + result);
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
 		
 		
 		
