@@ -59,8 +59,12 @@ public class Deque<Item> implements Iterable<Item> {
     	newNode.prev = null;
     	    	
     	//make next of the new node as the old first
-    	if(!isEmpty())
+    	if(!isEmpty()) {
     		first.prev = newNode;
+    	}
+    	else {
+    		last = newNode;
+    	}
     	
     	first = newNode;
     	//increase the number of nodes
@@ -107,7 +111,7 @@ public class Deque<Item> implements Iterable<Item> {
     	//delete the first node -- -- link the second first node to the front of the list
     	Node firstNext = first.next;
     	
-    	//if the delete node is not the last node
+    	//if the delete node is not the last/tail node
     	if(firstNext != null) {
     		
     		firstNext.prev = null; //handle previous pointer
@@ -117,6 +121,7 @@ public class Deque<Item> implements Iterable<Item> {
     		first = firstNext;
     	}
     	else {
+    		
     		first = null;
     		last = null;
     	}
@@ -131,17 +136,32 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the back
     public Item removeLast() {
+    	
+    	if(isEmpty()) {
+    		throw new NoSuchElementException("Stack underflow");
+    	}
+    	
     	//save item to return
     	Item oldLast = last.item;
     	
     	//delete the last node -- link the second last node to the end of the list
     	Node prevLast = last.prev;
     	
-    	prevLast.next = null;
+    	//if the delete node is not the head node
+    	if(prevLast != null) {
+    		
+    		prevLast.next = null; //handle next pointer
     	
-    	last.prev = null;
+    		last.prev = null;//handle prev pointer
     	
-    	last = prevLast;
+    		last = prevLast;
+    	}
+    	else {
+    		//first.next = null; //handle next pointer
+    		first = null;
+    		last = null;
+    	}
+    	
     	
     	n--;
     	
@@ -198,8 +218,7 @@ public class Deque<Item> implements Iterable<Item> {
    		}
    		return true;
    	}
-   	
-   	
+ 	  	
    	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
@@ -238,7 +257,7 @@ public class Deque<Item> implements Iterable<Item> {
 //		StdOut.println(linkedDeque.toString());
 		
 		
-		StdOut.println("Call add first 1 2 3");
+		StdOut.println("Call add  last 1 2 3");
 		
 		linkedDeque.addLast("0");
 	
@@ -256,12 +275,45 @@ public class Deque<Item> implements Iterable<Item> {
 		
 		int origSize = linkedDeque.size();
 		
-		StdOut.println("Call removeFirst " + origSize + " consecutive times: " + result);
+		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
 		
 			
 		for(int i = 0; i < origSize; i++) {
 			
-			result += linkedDeque.removeFirst() + " ";
+			result += linkedDeque.removeLast() + " ";
+			
+			//StdOut.println("Remove items in this order: " + result);
+			
+		}
+		
+		StdOut.println("Remove items in this order: " + result);
+		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+		
+		//***********************************
+		StdOut.println("Test case 2: Call add  first 0 1 2 3");
+		
+		result = " ";
+		
+		linkedDeque.addFirst("0");
+	
+		linkedDeque.addFirst("1");
+		
+		linkedDeque.addFirst("2");
+		
+		linkedDeque.addFirst("3");
+		
+		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+		
+		linkedDeque.printDequeue();
+		
+		origSize = linkedDeque.size();
+		
+		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
+		
+			
+		for(int i = 0; i < origSize; i++) {
+			
+			result += linkedDeque.removeLast() + " ";
 			
 			//StdOut.println("Remove items in this order: " + result);
 			
