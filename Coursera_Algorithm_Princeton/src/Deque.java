@@ -4,12 +4,7 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-/*A double-ended queue or deque (pronounced “deck”) is 
- * a generalization of a stack and a queue 
- * that supports adding and removing items 
- * from either the front or the back of the data structure.
- * Design choice: implement stack and queue operations with singly linked list
-*/
+
 public class Deque<Item> implements Iterable<Item> {
 	
 	private Node first;
@@ -51,6 +46,11 @@ public class Deque<Item> implements Iterable<Item> {
     // add the item to the front
     // edge case: the list is empty
     public void addFirst(Item item) {
+    	
+    	if(item == null) {
+    		throw new IllegalArgumentException("Item is null");
+    	}
+    	
     	//save a link to the front list
     	Node newNode = new Node(item);
     	
@@ -75,6 +75,11 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the back
     public void addLast(Item item) {
+    	
+    	if(item == null) {
+    		throw new IllegalArgumentException("Item is null");
+    	}
+    	
     	//save a link to the last node
     	Node newNode = new Node(item);
     	
@@ -193,6 +198,8 @@ public class Deque<Item> implements Iterable<Item> {
 		@Override
 		public Item next() {
 			// TODO Auto-generated method stub
+			if(!hasNext())
+				throw new UnsupportedOperationException("There are no more items to return");
 			Item item = current.item;
 			current = current.next;
 			return item;
