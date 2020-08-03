@@ -1,11 +1,12 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.StdOut;
 
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 	
-	private Item[] q;
+	private Item[] q; //array of items
 	
 	private int head, tail, N;
 	
@@ -14,7 +15,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	head = 0; 
     	tail = 0; // tail = N, the position for the next item to appear, tail++
     	N = 0;
-    	q = (Item[]) new Object[1];
+    	q = (Item[]) new Object[2];
     	assert check();
     	
     }
@@ -40,21 +41,29 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the new item at q[tail]
     public void enqueue(Item item) {
-    	if(N == q.length) resize(2*q.length);
+    	//double size of array if necessary
+    	if(N == q.length) resize(2*q.length); //double size of array if necessary
     	
-    	if(head != 0 && tail % q.length == 0) //if the array is not full and get past the capacity, next: test this by continue enqueue and read more about clock arithmetic http://mathandmultimedia.com/2012/07/08/clock-arithmetic/#:~:text=The%20kind%20of%20number%20system,modulus%20is%20equal%20to%2012.
-    		updateQArray();
+//    	if(head != 0 && tail % q.length == 0) //if the array is not full and get past the capacity, next: test this by continue enqueue and read more about clock arithmetic http://mathandmultimedia.com/2012/07/08/clock-arithmetic/#:~:text=The%20kind%20of%20number%20system,modulus%20is%20equal%20to%2012.
+//    		updateQArray();
     	
-    	q[tail++] = item;
+    	q[tail++] = item; //add item
+    	if (tail == q.length) tail = 0; // since we remove item from the front, the front always has open space. Wrap-around.
     	N++;
     	
     }
 
     // remove and return a random item, but maintain head pointer
     public Item dequeue() {
+    	
+    	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+    	
     	Item item = q[head];
     	q[head++] = null; //avoid loitering
     	N--;
+    	if(head == q.length) head = 0; //the least recently used item is the first item, the next item to remove is at 0 position; wrap around
+    	// shrink size of array if necessary
+    	if (N > 0 && N == q.length/4) resize(q.length/2);
     	return item;
     }
     
@@ -68,9 +77,43 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	// return an independent iterator over items in random order
 	public Iterator<Item> iterator() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayIterator();
 	}
     
+    private class ArrayIterator implements Iterator<Item> {
+    	private int i = 0;
+		@Override
+		public boolean hasNext() {
+			// TODO Auto-generated method stub
+			return i < N;
+		}
+
+		@Override
+		public Item next() {
+			// TODO Auto-generated method stub
+			if(!hasNext()) throw new NoSuchElementException();
+			Item item = q[(head + i) % q.length];
+			i++;
+			return item;
+		}
+
+		@Override
+		public void remove() {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException();
+		}
+    	
+    }
+    
+    
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+   		for(Item item: this)
+   			s.append(item + " ");
+		return s.toString();
+	}
+
 	private  void printRandomQueue() {
    		//StringBuilder s = new StringBuilder();
 		int i = 0;
@@ -87,28 +130,32 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     
     // precondition: when get past the capacity, reset head to zero, and update tail
     // Is it run infrequently?
-    private void updateQArray() {
-    	for(int i = head; i < tail; i++) {
-    		// i + N >= capacity
-    		q[(i + N) % q.length] = q[i];
-    	}
-    	for(int i = N; i < q.length; i++) {
-    		if(q[i] != null)
-    			q[i] = null;
-    	}
-    	
-    	head = 0;
-    	tail = N;
-    }
+//    private void updateQArray() {
+//    	for(int i = head; i < tail; i++) {
+//    		// i + N >= capacity
+//    		q[(i + N) % q.length] = q[i];
+//    	}
+//    	for(int i = N; i < q.length; i++) {
+//    		if(q[i] != null)
+//    			q[i] = null;
+//    	}
+//    	
+//    	head = 0;
+//    	tail = N;
+//    }
     
     private void resize(int capacity) {
     	
+    	assert capacity >= N;
+    	
     	Item[] copy = (Item[]) new Object[capacity];
     	
-    	for(int i = head; i < tail; i++)
-    		copy[i] = q[i];
+    	for(int i = 0; i < N; i++)
+    		copy[i] = q[((head + i) % q.length)]; //like a clock, starting at head position, if (head + i) get past q.length, reset it
     	
     	q = copy;
+    	head = 0; //reset it to 0, the beginning and the least recently used
+    	tail = N; // the next item position to be added
   
     }
 
@@ -131,6 +178,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 //   		}
    		return true;
    	}
+   	
+   	
     
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -150,29 +199,30 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		
 		randQ.enqueue("to");
 		
-		randQ.dequeue();
+		StdOut.print(randQ.dequeue() + " ");
 		
 		randQ.enqueue("be");
-		
-		randQ.dequeue();
-		
-		randQ.dequeue();
+				
+		StdOut.print(randQ.dequeue() + " ");
+			
+		StdOut.print(randQ.dequeue() + " ");
 		
 		randQ.enqueue("that");
 		
-		randQ.dequeue();
 		
-		randQ.dequeue();
-		
-		randQ.dequeue();
+		StdOut.print(randQ.dequeue() + " ");
+				
+		StdOut.print(randQ.dequeue() + " ");
+			
+		StdOut.print(randQ.dequeue() + " ");
 		
 		randQ.enqueue("is");
 		
-		randQ.enqueue("worst");
+		//randQ.enqueue("worst");
 		
 		StdOut.println("(" + randQ.size() + " left on deque)");
 		
-		randQ.printRandomQueue();
+		StdOut.print(randQ.toString());
 		
 //		String result = " ";
 //		
