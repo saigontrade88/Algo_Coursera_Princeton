@@ -1,5 +1,6 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.StdRandom;
 
 import edu.princeton.cs.algs4.StdOut;
 
@@ -41,6 +42,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the new item at q[tail]
     public void enqueue(Item item) {
+    	if(item == null) throw new IllegalArgumentException();
+    	
     	//double size of array if necessary
     	if(N == q.length) resize(2*q.length); //double size of array if necessary
     	
@@ -59,6 +62,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
     	
     	Item item = q[head];
+    	
+    	//Item item = sample(); //return a random item
+    	
     	q[head++] = null; //avoid loitering
     	N--;
     	if(head == q.length) head = 0; //the least recently used item is the first item, the next item to remove is at 0 position; wrap around
@@ -70,7 +76,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return a random item (but do not remove it)
     public Item sample() {
-    	return null;
+    	
+    	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+    	
+    	//Choose an item uniformly at random among a.
+		int randPos = StdRandom.uniform(N);
+		
+		//locate randPos in the q
+		randPos = (head + randPos) % q.length;
+		
+    	return q[randPos];
     }
 
     @Override
@@ -92,6 +107,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		public Item next() {
 			// TODO Auto-generated method stub
 			if(!hasNext()) throw new NoSuchElementException();
+			
+			//StdRandom.shuffle(q);
+			
 			Item item = q[(head + i) % q.length];
 			i++;
 			return item;
@@ -195,17 +213,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		
 		randQ.enqueue("or");
 		
+		StdOut.println("First call to produce a random element: " + randQ.sample().toString() + " size = " + randQ.size());
+		
 		randQ.enqueue("not");
 		
 		randQ.enqueue("to");
 		
-		StdOut.print(randQ.dequeue() + " ");
+		StdOut.println("Second call to produce a random element: " +randQ.sample().toString()+ " size = " + randQ.size());
+		
+		StdOut.println(randQ.dequeue() + " ");
 		
 		randQ.enqueue("be");
+		
+		StdOut.println("Third call to produce a random element: " +randQ.sample().toString()+ " size = " + randQ.size());
 				
-		StdOut.print(randQ.dequeue() + " ");
+		StdOut.println(randQ.dequeue() + " ");
 			
-		StdOut.print(randQ.dequeue() + " ");
+		StdOut.println(randQ.dequeue() + " ");
+		
+		StdOut.println("Fourth call to produce a random element: " + randQ.sample().toString()+ " size = " + randQ.size());
 		
 		randQ.enqueue("that");
 		
@@ -222,7 +248,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		
 		StdOut.println("(" + randQ.size() + " left on deque)");
 		
-		StdOut.print(randQ.toString());
+		//StdOut.print(randQ.toString());
 		
 //		String result = " ";
 //		
@@ -241,7 +267,30 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 //		
 //		StdOut.println("Remove items in this order: " + result);
 //		StdOut.println("(" + randQ.size() + " left on deque)");
-
+		///********************/
+		StdOut.println("Test sample() method");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		StdOut.println("Test iteration");
+		
+		int n = 5;
+		RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
+		for (int i = 0; i < n; i++)
+		    queue.enqueue(i);
+		for (int a : queue) {
+		    for (int b : queue)
+		        StdOut.print(a + "-" + b + " ");
+		    StdOut.println();
+		}
 	}
 
 	
