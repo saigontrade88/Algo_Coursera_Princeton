@@ -1,5 +1,8 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import com.sun.prism.sw.SWPipeline;
+
 import edu.princeton.cs.algs4.StdRandom;
 
 import edu.princeton.cs.algs4.StdOut;
@@ -10,6 +13,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	private Item[] q; //array of items
 	
 	private int head, tail, N;
+	
+	private int randPos; 
 	
 	// construct an empty randomized queue
     public RandomizedQueue() {
@@ -61,18 +66,36 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	
     	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
     	
-    	Item item = q[head];
+    	//Item item = q[head];
     	
-    	//Item item = sample(); //return a random item
+    	Item item = sample(); //return a random item
     	
-    	q[head++] = null; //avoid loitering
+    	Swap(q, head, randPos);
+    	
+    	StdOut.println("Call to produce a random element at pos = " + getRandPos());
+    	
+    	q[head++] = null; //avoid loitering and update head position
+    	
     	N--;
+    	
     	if(head == q.length) head = 0; //the least recently used item is the first item, the next item to remove is at 0 position; wrap around
     	// shrink size of array if necessary
     	if (N > 0 && N == q.length/4) resize(q.length/2);
+    	
+    	randPos = -1;
+    	
     	return item;
     }
     
+    private void Swap(Item[] a, int i, int j) {
+    	
+    	Item temp = a[j];
+    	
+    	a[j] = a[i];
+    	
+    	a[i] = temp;
+    	
+    }
 
     // return a random item (but do not remove it)
     public Item sample() {
@@ -80,7 +103,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
     	
     	//Choose an item uniformly at random among a.
-		int randPos = StdRandom.uniform(N);
+		randPos = StdRandom.uniform(N);
 		
 		//locate randPos in the q
 		randPos = (head + randPos) % q.length;
@@ -145,6 +168,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    		}
    		StdOut.println(result);
    	}
+	
+	
     
     // precondition: when get past the capacity, reset head to zero, and update tail
     // Is it run infrequently?
@@ -162,7 +187,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 //    	tail = N;
 //    }
     
-    private void resize(int capacity) {
+    /**
+	 * @return the randPos
+	 */
+	private int getRandPos() {
+		return randPos;
+	}
+
+	/**
+	 * @param randPos the randPos to set
+	 */
+	private void setRandPos(int randPos) {
+		this.randPos = randPos;
+	}
+
+	private void resize(int capacity) {
     	
     	assert capacity >= N;
     	
@@ -213,29 +252,28 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		
 		randQ.enqueue("or");
 		
-		StdOut.println("First call to produce a random element: " + randQ.sample().toString() + " size = " + randQ.size());
+		//StdOut.println("First call to produce a random element: " + randQ.sample().toString() + " pos = " + randQ.getRandPos());
 		
 		randQ.enqueue("not");
 		
 		randQ.enqueue("to");
-		
-		StdOut.println("Second call to produce a random element: " +randQ.sample().toString()+ " size = " + randQ.size());
+				
+		//StdOut.println("Second call to produce a random element: " +randQ.sample().toString()+ " pos = " + randQ.getRandPos());
 		
 		StdOut.println(randQ.dequeue() + " ");
 		
 		randQ.enqueue("be");
 		
-		StdOut.println("Third call to produce a random element: " +randQ.sample().toString()+ " size = " + randQ.size());
+		//StdOut.println("Third call to produce a random element: " +randQ.sample().toString()+ " pos = " + randQ.getRandPos());
 				
 		StdOut.println(randQ.dequeue() + " ");
 			
 		StdOut.println(randQ.dequeue() + " ");
 		
-		StdOut.println("Fourth call to produce a random element: " + randQ.sample().toString()+ " size = " + randQ.size());
+		//StdOut.println("Fourth call to produce a random element: " + randQ.sample().toString()+ " pos = " + randQ.getRandPos());
 		
 		randQ.enqueue("that");
-		
-		
+			
 		StdOut.print(randQ.dequeue() + " ");
 				
 		StdOut.print(randQ.dequeue() + " ");
@@ -270,16 +308,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		///********************/
 		StdOut.println("Test sample() method");
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+					
 		StdOut.println("Test iteration");
 		
 		int n = 5;
