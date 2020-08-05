@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 import com.sun.prism.sw.SWPipeline;
 
 import edu.princeton.cs.algs4.StdRandom;
-
+import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
 
@@ -120,6 +120,20 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     
     private class ArrayIterator implements Iterator<Item> {
     	private int i = 0;
+    	private int[] selected;
+    	
+		public ArrayIterator() {
+			//StdRandom.shuffle(q);
+			selected = new int[N];
+			
+			for(int i = 0; i < N; i++) {
+				selected[i] = (head + i) % q.length;
+			}
+			
+			//implements the Knuth shuffle and discussed in lecture and runs in linear time.
+			StdRandom.shuffle(selected); //test this method, how does it work
+		}
+
 		@Override
 		public boolean hasNext() {
 			// TODO Auto-generated method stub
@@ -130,10 +144,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		public Item next() {
 			// TODO Auto-generated method stub
 			if(!hasNext()) throw new NoSuchElementException();
-			
-			//StdRandom.shuffle(q);
-			
-			Item item = q[(head + i) % q.length];
+									
+			Item item = q[selected[i]];
 			i++;
 			return item;
 		}
@@ -320,6 +332,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		        StdOut.print(a + "-" + b + " ");
 		    StdOut.println();
 		}
+		
+		///********************/
+		StdOut.println("More test randomized deque() method");
+		
+		RandomizedQueue<String> randQ_2 = new RandomizedQueue<String>();
+		
+		while(!StdIn.isEmpty()) {
+			String item = StdIn.readString();
+			if(!item.equals("-"))
+				randQ_2.enqueue(item);
+			else
+				randQ_2.dequeue();
+			
+		}
+		
+		StdOut.println("(" + randQ_2.size() + " left on stack)");
+		
+		StdOut.println(randQ_2.toString());
 	}
 
 	
