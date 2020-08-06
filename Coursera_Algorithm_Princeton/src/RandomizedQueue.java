@@ -26,15 +26,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	
     }
     
-    public RandomizedQueue(int capacity) {
-    	head = 0; 
-    	tail = 0; // tail = N, the position for the next item to appear, tail++
-    	N = 0;
-    	q = (Item[]) new Object[capacity];
-    	assert check();
-    	
-    }
-
+ 
     // is the randomized queue empty?
     public boolean isEmpty() {
     	return N == 0;
@@ -46,6 +38,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // add the new item at q[tail]
+    // Time complexity: constant amortized time
     public void enqueue(Item item) {
     	if(item == null) throw new IllegalArgumentException();
     	
@@ -62,6 +55,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // remove and return a random item, but maintain head pointer
+    // Time complexity: constant amortized time
     public Item dequeue() {
     	
     	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
@@ -122,6 +116,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	private int i = 0;
     	private int[] selected;
     	
+    	//Time complexity: Linear time
 		public ArrayIterator() {
 			//StdRandom.shuffle(q);
 			selected = new int[N];
