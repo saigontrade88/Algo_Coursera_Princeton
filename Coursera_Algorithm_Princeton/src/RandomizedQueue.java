@@ -66,7 +66,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     	
     	Swap(q, head, randPos);
     	
-    	StdOut.println("Call to produce a random element at pos = " + getRandPos());
+    	//StdOut.println("Call to produce a random element at pos = " + getRandPos());
     	
     	q[head++] = null; //avoid loitering and update head position
     	
