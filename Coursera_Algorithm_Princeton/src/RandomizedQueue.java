@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import com.sun.prism.sw.SWPipeline;
+//import com.sun.prism.sw.SWPipeline;
 
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdIn;
