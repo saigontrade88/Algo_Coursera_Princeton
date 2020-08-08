@@ -13,7 +13,7 @@ Monte Carlo simulation. To estimate the percolation threshold, consider the foll
 __Performance requirements.__
 The constructor should take time proportional to n2; all methods should take constant time plus a constant number of calls to the union–find methods union(), find(), connected(), and count().
 
-For more informations, check [the official assignment
+For more informations, please go to [the official assignment
 description][1].
 
 ## Programming Assignment 2: Deques and Randomized Queues
