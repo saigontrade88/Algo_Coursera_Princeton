@@ -13,6 +13,9 @@ Monte Carlo simulation. To estimate the percolation threshold, consider the foll
 __Performance requirements.__
 The constructor should take time proportional to n2; all methods should take constant time plus a constant number of calls to the union–find methods union(), find(), connected(), and count().
 
+For more informations, check [the official assignment
+description][1].
+
 ## Programming Assignment 2: Deques and Randomized Queues
 
 ### Write a generic data type for a deque and a randomized queue. The goal of this assignment is to implement elementary data structures using arrays and linked lists, and to introduce you to generics and iterators.
@@ -27,3 +30,5 @@ __Performance requirements.__  Your deque implementation must support each deque
 A randomized queue is similar to a stack or queue, except that the item removed is chosen uniformly at random from items in the data structure.
 
 __Performance requirements.__  Your randomized queue implementation must support each randomized queue operation (besides creating an iterator) in constant amortized time. That is, any sequence of m randomized queue operations (starting from an empty queue) must take at most cm steps in the worst case, for some constant c. A randomized queue containing n items must use at most 48n + 192 bytes of memory. Additionally, your iterator implementation must support operations next() and hasNext() in constant worst-case time; and construction in linear time; you may (and will need to) use a linear amount of extra memory per iterator.
+
+[1]: http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
