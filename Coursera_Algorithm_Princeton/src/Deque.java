@@ -4,12 +4,7 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-/*A double-ended queue or deque (pronounced “deck”) is 
- * a generalization of a stack and a queue 
- * that supports adding and removing items 
- * from either the front or the back of the data structure.
- * Design choice: implement stack and queue operations with singly linked list
-*/
+
 public class Deque<Item> implements Iterable<Item> {
 	
 	private Node first;
@@ -20,8 +15,10 @@ public class Deque<Item> implements Iterable<Item> {
 	private class Node{
 		private Item item;
 		private Node next;
+		private Node prev;
 		public Node(Item item) {
 			this.item = item;
+			next = prev = null;
 		}
 		
 		
@@ -47,16 +44,29 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     // add the item to the front
+    // edge case: the list is empty
     public void addFirst(Item item) {
+    	
+    	if(item == null) {
+    		throw new IllegalArgumentException("Item is null");
+    	}
+    	
     	//save a link to the front list
-    	Node oldFirst = first;
+    	Node newNode = new Node(item);
     	
-    	//create a new node for the beginning
-    	first = new Node(item);
+    	//create a new node for the beginning, make the new node as first
+    	newNode.next = first;
+    	newNode.prev = null;
     	    	
-    	//link the new node to the front of the list
-    	first.next = oldFirst;
+    	//make next of the new node as the old first
+    	if(!isEmpty()) {
+    		first.prev = newNode;
+    	}
+    	else {
+    		last = newNode;
+    	}
     	
+    	first = newNode;
     	//increase the number of nodes
     	n++;
     	
@@ -65,14 +75,32 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the back
     public void addLast(Item item) {
+    	
+    	if(item == null) {
+    		throw new IllegalArgumentException("Item is null");
+    	}
+    	
     	//save a link to the last node
-    	Node oldLast = last;
+    	Node newNode = new Node(item);
     	
-    	// create a new node for the end
-    	last = new Node(item);
+    	//make the new node as last
+    	newNode.next = null;
+    	newNode.prev = last;
     	
+    	if(!isEmpty()) {
+    		last.next = newNode;
+    	}
+    	else {
+    		first = newNode;
+    	}
+    		
     	//link the new node to the end of the list
-    	oldLast.next = last;
+    	last = newNode;
+    	
+    	//increase the number of nodes
+    	n++;
+    	
+    	assert check();
     	
     }
 
@@ -86,7 +114,23 @@ public class Deque<Item> implements Iterable<Item> {
     	Item oldFirst = first.item;
     	
     	//delete the first node -- -- link the second first node to the front of the list
-    	first = first.next;
+    	Node firstNext = first.next;
+    	
+    	//if the delete node is not the last/tail node
+    	if(firstNext != null) {
+    		
+    		firstNext.prev = null; //handle previous pointer
+    	
+    		first.next = null;//handle next pointer
+    	
+    		first = firstNext;
+    	}
+    	else {
+    		
+    		first = null;
+    		last = null;
+    	}
+    	
     	n--;
     	
     	assert check();
@@ -97,21 +141,45 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the back
     public Item removeLast() {
+    	
+    	if(isEmpty()) {
+    		throw new NoSuchElementException("Stack underflow");
+    	}
+    	
     	//save item to return
+    	Item oldLast = last.item;
     	
     	//delete the last node -- link the second last node to the end of the list
+    	Node prevLast = last.prev;
     	
+    	//if the delete node is not the head node
+    	if(prevLast != null) {
+    		
+    		prevLast.next = null; //handle next pointer
+    	
+    		last.prev = null;//handle prev pointer
+    	
+    		last = prevLast;
+    	}
+    	else {
+    		//first.next = null; //handle next pointer
+    		first = null;
+    		last = null;
+    	}
+    	
+    	
+    	n--;
+    	
+    	assert check();
     	//return the saved item
-    	
-
-    	return null;
+    	return oldLast;
     }
 
     // return an iterator over items in order from front to back
    	@Override
    	public Iterator<Item> iterator() {
    		// TODO Auto-generated method stub
-   		return null;
+   		return new ListIterator();
    	}
    	
    	private class ListIterator implements Iterator<Item>{
@@ -130,6 +198,8 @@ public class Deque<Item> implements Iterable<Item> {
 		@Override
 		public Item next() {
 			// TODO Auto-generated method stub
+			if(!hasNext())
+				throw new UnsupportedOperationException("There are no more items to return");
 			Item item = current.item;
 			current = current.next;
 			return item;
@@ -145,18 +215,27 @@ public class Deque<Item> implements Iterable<Item> {
    			if(first != null) return false;
    		}
    		else if(n == 1) {
-   			if(first == null) return false;
-   			if(first.next != null) return false;
+   			if(first == null || last == null) return false;
+   			if(first.next != null || last.prev != null) return false;
    			//How about the tail check the Queue sample program
    		}
    		else {
    			if (first == null) return false;
-   			if(first.next == null) return false;
+   			if(first.next == null || last.prev == null) return false;
    		}
    		return true;
    	}
-   	
-   	private  void printDequeue() {
+ 	  	
+   	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+   		StringBuilder s = new StringBuilder();
+   		for(Item item: this)
+   			s.append(item + " ");
+		return s.toString();
+	}
+
+	private  void printDequeue() {
    		//StringBuilder s = new StringBuilder();
    		Node temp = first;
    		String result = " ";
@@ -170,9 +249,14 @@ public class Deque<Item> implements Iterable<Item> {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Deque<String> linkedDeque = new Deque<String>();
+		
 		while(!StdIn.isEmpty()) {
 			String item = StdIn.readString();
-			if(!item.equals("-"))
+			if(!item.equals("-") && !item.equals("*") && !item.equals("it"))
+				linkedDeque.addLast(item);
+			else if(item.equals("*"))
+				linkedDeque.removeLast();
+			else if(item.equals("it"))
 				linkedDeque.addFirst(item);
 			else
 				linkedDeque.removeFirst();
@@ -181,12 +265,49 @@ public class Deque<Item> implements Iterable<Item> {
 		
 		StdOut.println("(" + linkedDeque.size() + " left on stack)");
 		
-		linkedDeque.printDequeue();
+		StdOut.println(linkedDeque.toString());
 		
-		
-		
-//		StdOut.println("Call add first 1 2 3");
+		//***********************************
+			
+//		StdOut.println("Call add  last 0 1 2 3, then removeLast repeatedly");
 //		
+//		linkedDeque.addLast("0");
+//	
+//		linkedDeque.addLast("1");
+//		
+//		linkedDeque.addLast("2");
+//		
+//		linkedDeque.addLast("3");
+//		
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+//		
+//		linkedDeque.printDequeue();
+//		
+//		String result = " ";
+//		
+//		int origSize = linkedDeque.size();
+//		
+//		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
+//		
+//			
+//		for(int i = 0; i < origSize; i++) {
+//			
+//			result += linkedDeque.removeLast() + " ";
+//			
+//			//StdOut.println("Remove items in this order: " + result);
+//			
+//		}
+//		
+//		StdOut.println("Remove items in this order: " + result);
+//		StdOut.println("(" + linkedDeque.size() + " left on deque)");
+//		
+//		//***********************************
+//		StdOut.println("Test case 2: Call add  first 0 1 2 3, then removeLast repeatedly");
+//		
+//		result = " ";
+//		
+//		linkedDeque.addFirst("0");
+//	
 //		linkedDeque.addFirst("1");
 //		
 //		linkedDeque.addFirst("2");
@@ -197,16 +318,16 @@ public class Deque<Item> implements Iterable<Item> {
 //		
 //		linkedDeque.printDequeue();
 //		
-//		String result = " ";
+//		origSize = linkedDeque.size();
 //		
-//		int origSize = linkedDeque.size();
-//		
-//		StdOut.println("Call removeFirst " + origSize + " consecutive times: " + result);
+//		StdOut.println("Call removeLast " + origSize + " consecutive times: " + result);
 //		
 //			
 //		for(int i = 0; i < origSize; i++) {
 //			
-//			result += linkedDeque.removeFirst() + " ";
+//			result += linkedDeque.removeLast() + " ";
+//			
+//			//StdOut.println("Remove items in this order: " + result);
 //			
 //		}
 //		
